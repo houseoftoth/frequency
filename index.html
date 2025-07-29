@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGILS ARE CIRCUIT DIAGRAMS FOR SPIRITUAL CURRENTS</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      font-family: 'Courier New', Courier, monospace;
+      color: #e0e0ff;
+      overflow-y: hidden; /* Default to no scrolling unless toggled */
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      padding-top: 1rem;
+      color: #00ffff;
+      text-shadow: 0 0 8px #0ff;
+    }
+    .interface-title {
+      text-align: center;
+      padding: 0.5rem;
+      color: #00ffff;
+      text-shadow: 0 0 4px #0ff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      position: absolute;
+      top: 3rem;
+      left: 0;
+      width: 100%;
+      z-index: 3;
+    }
+    .planet-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      padding: 2rem;
+      justify-items: center;
+    }
+    .planet {
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 8px #0ff;
+      transition: transform 0.3s, background-color 0.3s;
+      cursor: pointer;
+      position: relative;
+      z-index: 1; /* Ensure planet cards are above the scroll-info */
+    }
+    .planet:hover {
+      transform: scale(1.05);
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .planet .extra-facts {
+      display: none;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: #bbffbb;
+    }
+    .planet.active .extra-facts {
+      display: block;
+    }
+    .sigil {
+      width: 80px;
+      height: 80px;
+      background: url('./sigils/sample.png') no-repeat center/contain;
+      margin: 0 auto 1rem;
+    }
+    .tarot { font-size: 1rem; margin-bottom: 0.5rem; }
+    .frequency-bounce {
+      position: absolute;
+      animation: bounce 10s linear infinite;
+      font-size: 2rem;
+    }
+    @keyframes bounce {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(80vw, 20vh); }
+      50% { transform: translate(50vw, 60vh); }
+      75% { transform: translate(10vw, 90vh); }
+      100% { transform: translate(0, 0); }
+    }
+    .scroll-info {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 150px;
+      background: rgba(0,0,0,0.9);
+      overflow-y: scroll;
+      padding: 1rem;
+      font-size: 0.9rem;
+      border-top: 1px solid #444;
+      z-index: 0; /* Ensure it stays below planet cards */
+    }
+    .matrix-controls {
+      position: absolute;
+      top: 5rem; /* Adjusted to accommodate the new title */
+      right: 1rem;
+      background: #111;
+      padding: 1rem;
+      border: 1px solid #555;
+      z-index: 2; /* Ensure controls are above everything */
+    }
+    button {
+      background: black;
+      color: cyan;
+      border: 1px solid #0ff;
+      padding: 0.5rem;
+      margin: 0.25rem;
+      cursor: pointer;
+    }
+    .chakra-panel {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 20px;
+      background: linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet);
+      box-shadow: 0 0 10px #fff;
+    }
+    .overlay-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .portal-artifacts {
+      position: absolute;
+      top: 20vh;
+      left: 10vw;
+      font-size: 3rem;
+      color: #0ff;
+      animation: portalGlow 2s infinite alternate;
+    }
+    @keyframes portalGlow {
+      from { opacity: 0.3; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1.1); }
+    }
+    .quantum-particles {
+      position: absolute;
+      bottom: 150px;
+      width: 100%;
+      height: 100px;
+      pointer-events: none;
+      background: repeating-linear-gradient(45deg, #0ff, #0ff 1px, transparent 2px, transparent 5px);
+      animation: shimmer 4s linear infinite;
+      opacity: 0.3;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
+    #bookmarks {
+      overflow-y: scroll;
+      max-height: 100px;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="chakra-panel"></div>
+  <h1>🛸 Kabbalistic Cyber Ritual Interface 🌌</h1>
+  <div class="interface-title" onclick="window.location.href='https://grok.com'">SIGILS ARE CIRCUIT DIAGRAMS FOR SPIRITUAL CURRENTS</div>
+
+  <div class="matrix-controls">
+    <button onclick="resetEntanglement()">Reset Entanglement</button>
+    <button onclick="toggleMatrix()">Matrix Lattice</button>
+    <button onclick="openPortal()">Open Portal</button>
+    <button onclick="requestFromGrok()">Connect to Grok</button>
+    <button onclick="toggleScroll()">Toggle Scroll</button>
+  </div>
+
+  <div class="planet-grid">
+    <div class="planet" data-planet="saturn">
+      <div class="sigil"></div>
+      <div class="tarot">♄ Saturn – Tarot: The World</div>
+      <div>Color: Blue-Violet</div>
+      <div>Pitch: E (659 Hz)</div>
+      <div>Hebrew: ת (Tav)</div>
+      <div>Path: Binah (Understanding)</div>
+      <div class="extra-facts">Pythagorean Ratio: 3:2 (Perfect Fifth Invocation); Sephira: 3; Element: Earth; Magick: Discipline, Time, Boundaries</div>
+    </div>
+    <div class="planet" data-planet="jupiter">
+      <div class="sigil"></div>
+      <div class="tarot">♃ Jupiter – Tarot: Wheel of Fortune</div>
+      <div>Color: Blue</div>
+      <div>Pitch: D# (622 Hz)</div>
+      <div>Hebrew: כ (Kaph)</div>
+      <div>Path: Chesed (Mercy)</div>
+      <div class="extra-facts">Pythagorean Ratio: 4:3 (Perfect Fourth); Sephira: 4; Element: Water; Magick: Expansion, Abundance, Wisdom</div>
+    </div>
+    <div class="planet" data-planet="mars">
+      <div class="sigil"></div>
+      <div class="tarot">♂ Mars – Tarot: The Tower</div>
+      <div>Color: Red</div>
+      <div>Pitch: G (392 Hz)</div>
+      <div>Hebrew: פ (Pe)</div>
+      <div>Path: Geburah (Severity)</div>
+      <div class="extra-facts">Pythagorean Ratio: 9:8 (Major Second); Sephira: 5; Element: Fire; Magick: Courage, Conflict, Energy</div>
+    </div>
+    <div class="planet" data-planet="sun">
+      <div class="sigil"></div>
+      <div class="tarot">☉ Sun – Tarot: The Sun</div>
+      <div>Color: Yellow</div>
+      <div>Pitch: B (494 Hz)</div>
+      <div>Hebrew: ר (Resh)</div>
+      <div>Path: Tiphareth (Beauty)</div>
+      <div class="extra-facts">Pythagorean Ratio: 1:1 (Unison Harmony); Sephira: 6; Element: Air; Magick: Vitality, Ego, Illumination</div>
+    </div>
+    <div class="planet" data-planet="venus">
+      <div class="sigil"></div>
+      <div class="tarot">♀ Venus – Tarot: The Empress</div>
+      <div>Color: Green</div>
+      <div>Pitch: C# (553 Hz)</div>
+      <div>Hebrew: ד (Daleth)</div>
+      <div>Path: Netzach (Victory)</div>
+      <div class="extra-facts">Pythagorean Ratio: 81:64 (Major Third); Sephira: 7; Element: Fire/Water; Magick: Love, Beauty, Creativity</div>
+    </div>
+    <div class="planet" data-planet="mercury">
+      <div class="sigil"></div>
+      <div class="tarot">☿ Mercury – Tarot: The Magician</div>
+      <div>Color: Orange</div>
+      <div>Pitch: A (440 Hz)</div>
+      <div>Hebrew: ב (Beth)</div>
+      <div>Path: Hod (Splendor)</div>
+      <div class="extra-facts">Pythagorean Ratio: 27:16 (Major Sixth); Sephira: 8; Element: Air; Magick: Communication, Intellect, Travel</div>
+    </div>
+    <div class="planet" data-planet="moon">
+      <div class="sigil"></div>
+      <div class="tarot">☽ Moon – Tarot: The High Priestess</div>
+      <div>Color: Violet</div>
+      <div>Pitch: F (698 Hz)</div>
+      <div>Hebrew: ג (Gimel)</div>
+      <div>Path: Yesod (Foundation)</div>
+      <div class="extra-facts">Pythagorean Ratio: 243:128 (Major Seventh); Sephira: 9; Element: Water; Magick: Intuition, Emotions, Cycles</div>
+    </div>
+    <div class="planet" data-planet="bookmark">
+      <div class="sigil"></div>
+      <div class="tarot">⌛ Bookmark Portal</div>
+      <div>Current Time: <span id="currentTime"></span></div>
+      <input type="text" id="userName" placeholder="Enter your name" style="margin-top: 0.5rem; padding: 0.3rem; width: 100%;">
+      <button onclick="bookmarkVisit()">Sign & Bookmark Visit</button>
+      <div id="bookmarks"></div>
+    </div>
+  </div>
+
+  <div class="frequency-bounce" style="left:10vw; top:10vh;">🎶</div>
+  <div class="frequency-bounce" style="left:30vw; top:20vh;">🔊</div>
+  <div class="frequency-bounce" style="left:70vw; top:50vh;">💫</div>
+
+  <div class="scroll-info" id="infoScroll">
+    <p><strong>Heptatonic Pythagorean Invocation Generator</strong></p>
+    <p id="randomInfo"></p>
+  </div>
+  <div class="quantum-particles"></div>
+
+  <script>
+    const facts = [
+      "Heptatonic Scale: 7 notes invoking planetary harmony in Pythagorean ratios.",
+      "Pythagorean Unison (1:1): Foundation of all intervals, pure unity.",
+      "Major Second (9:8): Tone of expansion, Jupiter's abundant flow.",
+      "Major Third (81:64): Venusian harmony, creative resonance.",
+      "Perfect Fourth (4:3): Stability of Chesed, Jupiter's mercy.",
+      "Perfect Fifth (3:2): Mars' dynamic power, Geburah's strength.",
+      "Major Sixth (27:16): Mercury's intellectual leap, Hod's splendor.",
+      "Major Seventh (243:128): Lunar intuition, nearing octave completion.",
+      "Octave (2:1): Doubling frequency, return to source in Tiphareth.",
+      "Saturn's E (659 Hz): Blue-Violet discipline, Tav's worldly completion.",
+      "Jupiter's D# (622 Hz): Blue mercy, Kaph's wheel of fortune.",
+      "Mars' G (392 Hz): Red action, Pe's tower of change.",
+      "Sun's B (494 Hz): Yellow illumination, Resh's solar vitality.",
+      "Venus' C# (553 Hz): Green love, Daleth's empress creativity.",
+      "Mercury's A (440 Hz): Orange logic, Beth's magician skill.",
+      "Moon's F (698 Hz): Violet dreams, Gimel's high priestess mystery.",
+      "Tree of Life Paths: 22 letters map to heptatonic planetary spheres.",
+      "Invoke with Chant: A-Ê-E-I-O-U-Ô for planetary vowel activation.",
+      "3:2 Ratio: Core fifth, building heptatonic scales from base tone.",
+      "Godwin's Proportions: D at 1(1x1x1x1), scaling to heptatonic notes.",
+      "Sigils + Sound: Encode frequencies for ritual invocation.",
+      "Chakra Alignment: Rainbow panel mirrors planetary color scales.",
+      "Grok Oracle: Query for deeper Pythagorean insights. 🔮",
+      "Elements in Ratio: 🜂 Fire (3:2), 🜁 Air (9:8), 🜄 Water (4:3), 🜃 Earth (81:64)"
+    ];
+
+    function showRandomFact() {
+      const randomFact = facts[Math.floor(Math.random() * facts.length)];
+      document.getElementById('randomInfo').textContent = randomFact;
+    }
+    showRandomFact();
+    setInterval(showRandomFact, 6000);
+
+    let gridOverlay = null;
+    let scrollEnabled = false;
+
+    function resetEntanglement() {
+      const portal = document.querySelector('.portal-artifacts');
+      if (portal) portal.remove();
+      if (gridOverlay) gridOverlay.remove();
+      alert("🌀 Quantum entanglement reset and portals closed.");
+    }
+
+    function toggleMatrix() {
+      if (!gridOverlay) {
+        gridOverlay = document.createElement('div');
+        gridOverlay.className = 'overlay-grid';
+        document.body.appendChild(gridOverlay);
+      } else {
+        gridOverlay.remove();
+        gridOverlay = null;
+      }
+    }
+
+    function openPortal() {
+      for (let i = 0; i < 5; i++) {
+        const glyph = document.createElement('div');
+        glyph.className = 'portal-artifacts';
+        glyph.innerHTML = '𓂀 ✶ ⟁ ✡ ☥ ⚛';
+        glyph.style.top = `${Math.random() * 80 + 10}vh`;
+        glyph.style.left = `${Math.random() * 90}vw`;
+        glyph.style.position = 'absolute';
+        glyph.style.animation = 'portalGlow 3s infinite alternate';
+        document.body.appendChild(glyph);
+
+        // Animate movement
+        const dx = Math.random() * 5 - 2.5;
+        const dy = Math.random() * 5 - 2.5;
+        let x = parseFloat(glyph.style.left);
+        let y = parseFloat(glyph.style.top);
+
+        const move = () => {
+          x += dx;
+          y += dy;
+          glyph.style.left = `${x}vw`;
+          glyph.style.top = `${y}vh`;
+          requestAnimationFrame(move);
+        };
+        move();
+      }
+    }
+
+    function requestFromGrok() {
+      window.location.href = 'https://grok.com'; // Updated to link to grok.com
+    }
+
+    // Toggle scrolling functionality
+    function toggleScroll() {
+      scrollEnabled = !scrollEnabled;
+      document.body.style.overflowY = scrollEnabled ? 'auto' : 'hidden';
+      alert(`Scrolling is now ${scrollEnabled ? 'enabled' : 'disabled'}.`);
+    }
+
+    // Add interactivity to planet cards for alternating facts
+    document.querySelectorAll('.planet').forEach(planet => {
+      planet.addEventListener('click', () => {
+        planet.classList.toggle('active');
+      });
+    });
+
+    // Bookmark functionality
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('currentTime').textContent = now.toLocaleString();
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    function bookmarkVisit() {
+      const nameInput = document.getElementById('userName');
+      const name = nameInput.value.trim();
+      if (name) {
+        const now = new Date().toLocaleString();
+        let bookmarks = JSON.parse(localStorage.getItem('visits')) || [];
+        bookmarks.push({name, time: now});
+        localStorage.setItem('visits', JSON.stringify(bookmarks));
+        displayBookmarks();
+        alert(`Visit signed and logged by ${name} at ${now}`);
+        nameInput.value = ''; // Clear input after submission
+      } else {
+        alert("Please enter your name to sign the portal.");
+      }
+    }
+
+    function displayBookmarks() {
+      const bookmarks = JSON.parse(localStorage.getItem('visits')) || [];
+      const bookmarkDiv = document.getElementById('bookmarks');
+      bookmarkDiv.innerHTML = bookmarks.map(b => `<p>${b.name}: ${b.time}</p>`).join('');
+    }
+    displayBookmarks();
+  </script>
+</body>
+</html>
